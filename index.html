@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Игорь Стешаков — Риелтор</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #080a0f;
+      --glass: rgba(255, 255, 255, 0.05);
+      --glass-strong: rgba(255, 255, 255, 0.08);
+      --glass-blur: blur(28px);
+      --accent: #d4b06a;
+      --accent-light: #f5e6c4;
+      --accent-glow: rgba(212, 176, 106, 0.35);
+      --text: #f8f9fb;
+      --text-muted: #a8b0be;
+      --border: rgba(255, 255, 255, 0.1);
+      --border-gold: rgba(212, 176, 106, 0.22);
+      --overlay: rgba(8, 10, 15, 0.72);
+      --overlay-heavy: rgba(8, 10, 15, 0.82);
+      --whatsapp: #25d366;
+      --telegram: #2aabee;
+      --radius: 20px;
+      --radius-sm: 14px;
+      --shadow: 0 32px 80px rgba(0, 0, 0, 0.5);
+      --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      --transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      --reveal-ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Manrope', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ── Scroll reveal ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(48px);
+      transition:
+        opacity 0.9s var(--reveal-ease),
+        transform 0.9s var(--reveal-ease);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-scale {
+      opacity: 0;
+      transform: scale(0.94) translateY(30px);
+      transition:
+        opacity 1s var(--reveal-ease),
+        transform 1s var(--reveal-ease);
+    }
+
+    .reveal-scale.visible {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+
+    .delay-1 { transition-delay: 0.1s; }
+    .delay-2 { transition-delay: 0.2s; }
+    .delay-3 { transition-delay: 0.3s; }
+    .delay-4 { transition-delay: 0.4s; }
+    .delay-5 { transition-delay: 0.5s; }
+    .delay-6 { transition-delay: 0.6s; }
+
+    /* ── Premium glass ── */
+    .glass {
+      background: var(--glass);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-glass);
+    }
+
+    .section-bg {
+      position: relative;
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+
+    .section-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        var(--overlay-heavy) 0%,
+        var(--overlay) 50%,
+        var(--overlay-heavy) 100%
+      );
+      pointer-events: none;
+    }
+
+    .section-bg > .container {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Header ── */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 20px 0;
+      background: rgba(8, 10, 15, 0.45);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      transition: var(--transition);
+    }
+
+    header.scrolled {
+      background: rgba(8, 10, 15, 0.88);
+      padding: 14px 0;
+      border-bottom-color: var(--border-gold);
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    nav {
+      display: flex;
+      gap: 32px;
+    }
+
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color var(--transition);
+    }
+
+    nav a:hover {
+      color: var(--accent);
+    }
+
+    .burger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .burger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: var(--transition);
+    }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      padding: 140px 0 100px;
+      overflow: hidden;
+      background:
+        linear-gradient(135deg, rgba(8, 10, 15, 0.82) 0%, rgba(8, 10, 15, 0.65) 50%, rgba(8, 10, 15, 0.85) 100%),
+        url('https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=1920&h=1080&fit=crop') center/cover no-repeat;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 120px;
+      background: linear-gradient(to top, var(--bg), transparent);
+      pointer-events: none;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 60px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: rgba(212, 176, 106, 0.1);
+      border: 1px solid var(--border-gold);
+      border-radius: 100px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--accent-light);
+      margin-bottom: 28px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.85); }
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2.8rem, 5.5vw, 4.5rem);
+      font-weight: 700;
+      line-height: 1.06;
+      letter-spacing: -0.02em;
+      margin-bottom: 22px;
+      text-shadow: 0 4px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-location {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1rem;
+      color: var(--accent-light);
+      font-weight: 600;
+      margin-bottom: 18px;
+    }
+
+    .hero-subtitle {
+      font-size: 1.15rem;
+      color: rgba(242, 244, 248, 0.82);
+      margin-bottom: 40px;
+      max-width: 520px;
+      line-height: 1.75;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 20px 40px;
+      background: linear-gradient(135deg, var(--accent), #b8944f);
+      color: #0a0d12;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 100px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: var(--transition);
+      box-shadow: 0 10px 40px var(--accent-glow);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 16px 48px rgba(212, 176, 106, 0.45);
+    }
+
+    .btn-primary svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .hero-visual {
+      position: relative;
+      display: flex;
+      justify-content: center;
+    }
+
+    .hero-card-stack {
+      position: relative;
+      width: 100%;
+      max-width: 440px;
+    }
+
+    .hero-house-card {
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+
+    .hero-house-card img {
+      width: 100%;
+      height: 340px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .hero-house-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 40%, rgba(10, 13, 18, 0.7));
+    }
+
+    .hero-mini-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .hero-mini-card {
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      height: 110px;
+    }
+
+    .hero-mini-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .hero-mini-card:hover img {
+      transform: scale(1.08);
+    }
+
+    .hero-float-card {
+      position: absolute;
+      top: 24px;
+      left: -28px;
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-sm);
+      padding: 22px 28px;
+      z-index: 2;
+      box-shadow: var(--shadow-glass);
+    }
+
+    .hero-float-card strong {
+      display: block;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .hero-float-card span {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+      display: block;
+    }
+
+    /* ── Section common ── */
+    section {
+      padding: 100px 0;
+    }
+
+    .section-label {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2rem, 3.5vw, 2.8rem);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 16px;
+      text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .section-desc {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 580px;
+      margin-bottom: 48px;
+      line-height: 1.7;
+    }
+
+    /* ── Stats ── */
+    .stats {
+      background-image: url('https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1920&h=800&fit=crop');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      position: relative;
+      padding: 90px 0;
+    }
+
+    .stats::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(8, 10, 15, 0.85), rgba(8, 10, 15, 0.7));
+    }
+
+    .stats .container {
+      position: relative;
+      z-index: 1;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    .stat-card {
+      text-align: center;
+      padding: 40px 24px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-glass);
+      transition: var(--transition);
+    }
+
+    .stat-card:hover {
+      border-color: var(--border-gold);
+      transform: translateY(-6px);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .stat-number {
+      font-size: clamp(2.5rem, 4vw, 3.6rem);
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+
+    .stat-label {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* ── Properties ── */
+    #properties {
+      background-image: url('https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1920&h=1080&fit=crop');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      position: relative;
+    }
+
+    #properties::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(8, 10, 15, 0.88) 0%,
+        rgba(8, 10, 15, 0.75) 50%,
+        rgba(8, 10, 15, 0.9) 100%
+      );
+    }
+
+    #properties .container {
+      position: relative;
+      z-index: 1;
+    }
+
+    .properties-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+
+    .property-card {
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(32px);
+      -webkit-backdrop-filter: blur(32px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: var(--transition);
+      cursor: pointer;
+      box-shadow: var(--shadow-glass);
+    }
+
+    .property-card:hover {
+      transform: translateY(-10px);
+      border-color: var(--border-gold);
+      background: rgba(255, 255, 255, 0.07);
+      box-shadow: 0 32px 64px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    }
+
+    .property-img {
+      position: relative;
+      height: 230px;
+      overflow: hidden;
+    }
+
+    .property-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.7s ease;
+    }
+
+    .property-card:hover .property-img img {
+      transform: scale(1.07);
+    }
+
+    .property-tag {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      padding: 7px 16px;
+      background: rgba(10, 13, 18, 0.8);
+      backdrop-filter: blur(12px);
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--accent-light);
+      border: 1px solid rgba(212, 176, 106, 0.25);
+    }
+
+    .property-body {
+      padding: 28px;
+      background: rgba(255, 255, 255, 0.02);
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .property-price {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.65rem;
+      font-weight: 700;
+      color: var(--accent-light);
+      margin-bottom: 8px;
+    }
+
+    .property-title {
+      font-size: 1.12rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .property-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      line-height: 1.65;
+    }
+
+    .property-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* ── CIAN Reviews ── */
+    .cian-reviews {
+      background-image: url('https://images.unsplash.com/photo-1600210492494-724fe644cabb?w=1920&h=800&fit=crop');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      position: relative;
+    }
+
+    .cian-reviews::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(8, 10, 15, 0.9), rgba(8, 10, 15, 0.78));
+    }
+
+    .cian-reviews .container {
+      position: relative;
+      z-index: 1;
+    }
+
+    .cian-card {
+      max-width: 840px;
+      margin: 0 auto;
+      text-align: center;
+      padding: 72px 60px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(32px);
+      -webkit-backdrop-filter: blur(32px);
+      border: 1px solid var(--border);
+      border-radius: 32px;
+      box-shadow: var(--shadow-glass);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cian-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #0468ff, transparent);
+      border-radius: 0 0 4px 4px;
+    }
+
+    .cian-logo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 32px;
+    }
+
+    .cian-logo-icon {
+      width: 72px;
+      height: 72px;
+      background: linear-gradient(135deg, #0468ff, #0355d4);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 12px 36px rgba(4, 104, 255, 0.35);
+    }
+
+    .cian-logo-icon svg {
+      width: 44px;
+      height: 44px;
+    }
+
+    .cian-logo-text {
+      font-size: 2.4rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      color: #0468ff;
+      line-height: 1;
+    }
+
+    .cian-card .section-title {
+      margin-bottom: 20px;
+    }
+
+    .cian-desc {
+      font-size: 1.12rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      max-width: 620px;
+      margin: 0 auto 40px;
+    }
+
+    .cian-badges {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+
+    .cian-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      background: rgba(4, 104, 255, 0.1);
+      border: 1px solid rgba(4, 104, 255, 0.2);
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #6db3ff;
+    }
+
+    .btn-cian {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 22px 48px;
+      background: linear-gradient(135deg, #0468ff, #0355d4);
+      color: #fff;
+      font-size: 1.2rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 100px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 0 12px 40px rgba(4, 104, 255, 0.4);
+    }
+
+    .btn-cian:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 52px rgba(4, 104, 255, 0.55);
+    }
+
+    .btn-cian svg {
+      width: 22px;
+      height: 22px;
+      fill: currentColor;
+    }
+
+    /* ── Contacts ── */
+    #contacts {
+      background-image: url('https://images.unsplash.com/photo-1616486338812-68e934c94a6c?w=1920&h=1080&fit=crop');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      position: relative;
+    }
+
+    #contacts::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(8, 10, 15, 0.88), rgba(8, 10, 15, 0.75));
+    }
+
+    #contacts .container {
+      position: relative;
+      z-index: 1;
+    }
+
+    .contacts-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 22px 26px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-glass);
+      transition: var(--transition);
+    }
+
+    .contact-item:hover {
+      border-color: var(--border-gold);
+      background: rgba(255, 255, 255, 0.08);
+      transform: translateX(6px);
+    }
+
+    .contact-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: rgba(212, 176, 106, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+
+    .contact-item strong {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+
+    .contact-item span,
+    .contact-item a {
+      font-weight: 600;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .contact-item a:hover {
+      color: var(--accent);
+    }
+
+    .contact-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .btn-messenger {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 22px 36px;
+      border-radius: var(--radius);
+      font-size: 1.12rem;
+      font-weight: 700;
+      text-decoration: none;
+      color: #fff;
+      transition: var(--transition);
+    }
+
+    .btn-messenger svg {
+      width: 28px;
+      height: 28px;
+      fill: currentColor;
+    }
+
+    .btn-whatsapp {
+      background: var(--whatsapp);
+      box-shadow: 0 10px 36px rgba(37, 211, 102, 0.35);
+    }
+
+    .btn-whatsapp:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 44px rgba(37, 211, 102, 0.5);
+    }
+
+    .btn-telegram {
+      background: var(--telegram);
+      box-shadow: 0 10px 36px rgba(42, 171, 238, 0.35);
+    }
+
+    .btn-telegram:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 44px rgba(42, 171, 238, 0.5);
+    }
+
+    /* ── Footer ── */
+    footer {
+      padding: 36px 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      background: var(--bg);
+    }
+
+    /* ── Mobile nav ── */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 68px;
+      left: 0;
+      right: 0;
+      background: rgba(10, 13, 18, 0.96);
+      backdrop-filter: blur(24px);
+      padding: 24px;
+      border-bottom: 1px solid var(--border);
+      z-index: 99;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .mobile-nav.active {
+      display: flex;
+    }
+
+    .mobile-nav a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.05rem;
+      padding: 8px 0;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 1024px) {
+      .properties-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal, .reveal-scale {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+    }
+
+    @media (max-width: 768px) {
+      nav { display: none; }
+      .burger { display: flex; }
+
+      .hero {
+        background-attachment: scroll;
+        text-align: center;
+        padding-top: 110px;
+      }
+
+      .hero-subtitle {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .hero-visual {
+        order: -1;
+      }
+
+      .hero-card-stack {
+        max-width: 340px;
+      }
+
+      .hero-float-card {
+        left: 50%;
+        transform: translateX(-50%);
+        top: auto;
+        bottom: -20px;
+      }
+
+      .stats,
+      #properties,
+      .cian-reviews,
+      #contacts {
+        background-attachment: scroll;
+      }
+
+      .properties-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cian-card {
+        padding: 48px 28px;
+      }
+
+      .cian-logo {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .cian-logo-text {
+        font-size: 2rem;
+      }
+
+      .btn-cian {
+        width: 100%;
+        padding: 20px 32px;
+        font-size: 1.05rem;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+
+      .contacts-wrapper {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      section {
+        padding: 72px 0;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-mini-cards {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .btn-primary {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header id="header">
+    <div class="container header-inner">
+      <a href="#" class="logo">Игорь <span>Стешаков</span></a>
+      <nav>
+        <a href="#about">Обо мне</a>
+        <a href="#properties">Объекты</a>
+        <a href="#reviews">Отзывы</a>
+        <a href="#contacts">Контакты</a>
+      </nav>
+      <button class="burger" aria-label="Меню" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="mobile-nav" id="mobileNav">
+    <a href="#about" onclick="toggleMenu()">Обо мне</a>
+    <a href="#properties" onclick="toggleMenu()">Объекты</a>
+    <a href="#reviews" onclick="toggleMenu()">Отзывы</a>
+    <a href="#contacts" onclick="toggleMenu()">Контакты</a>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero" id="about">
+    <div class="container hero-grid">
+      <div class="hero-content">
+        <div class="hero-badge reveal">Принимаю заявки</div>
+        <h1 class="reveal delay-1">Ваш риелтор — <em>Игорь Стешаков</em></h1>
+        <div class="hero-location reveal delay-2">📍 Москва и Московская область</div>
+        <p class="hero-subtitle reveal delay-3">
+          Помогаю купить, продать и сдать недвижимость с 2009 года.
+          Индивидуальный подход, юридическая чистота сделки и результат,
+          которому можно доверять.
+        </p>
+        <a href="#contacts" class="btn-primary reveal delay-4">
+          Связаться со мной
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+      <div class="hero-visual reveal-scale delay-2">
+        <div class="hero-card-stack">
+          <div class="hero-float-card">
+            <strong>1000+</strong>
+            <span>успешных сделок</span>
+          </div>
+          <div class="hero-house-card">
+            <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&h=500&fit=crop" alt="Современный дом">
+          </div>
+          <div class="hero-mini-cards">
+            <div class="hero-mini-card">
+              <img src="https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?w=400&h=300&fit=crop" alt="Коттедж">
+            </div>
+            <div class="hero-mini-card">
+              <img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&h=300&fit=crop" alt="Загородный дом">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="stats">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-card reveal delay-1">
+          <div class="stat-number">17+</div>
+          <div class="stat-label">лет опыта</div>
+        </div>
+        <div class="stat-card reveal delay-2">
+          <div class="stat-number">1000+</div>
+          <div class="stat-label">закрытых сделок</div>
+        </div>
+        <div class="stat-card reveal delay-3">
+          <div class="stat-number">98%</div>
+          <div class="stat-label">довольных клиентов</div>
+        </div>
+        <div class="stat-card reveal delay-4">
+          <div class="stat-number">Москва</div>
+          <div class="stat-label">и Московская область</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Properties -->
+  <section id="properties">
+    <div class="container">
+      <div class="section-label reveal">Объекты</div>
+      <h2 class="section-title reveal delay-1">Актуальные предложения</h2>
+      <p class="section-desc reveal delay-2">Подборка лучших объектов недвижимости в Москве и Подмосковье — квартиры, дома и загородная недвижимость.</p>
+
+      <div class="properties-grid">
+        <div class="property-card reveal delay-1">
+          <div class="property-img">
+            <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&h=400&fit=crop" alt="Квартира">
+            <span class="property-tag">Продажа</span>
+          </div>
+          <div class="property-body">
+            <div class="property-price">18 500 000 ₽</div>
+            <h3 class="property-title">3-комн. квартира, 92 м²</h3>
+            <p class="property-desc">Современный жилой комплекс с панорамными окнами, закрытая территория, подземный паркинг. Рядом метро и парк.</p>
+            <div class="property-meta">
+              <span>📍 Хорошёво-Мнёвники</span>
+              <span>🏠 92 м²</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="property-card reveal delay-2">
+          <div class="property-img">
+            <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&h=400&fit=crop" alt="Дом">
+            <span class="property-tag">Продажа</span>
+          </div>
+          <div class="property-body">
+            <div class="property-price">45 000 000 ₽</div>
+            <h3 class="property-title">Коттедж, 280 м²</h3>
+            <p class="property-desc">Двухэтажный дом с участком 12 соток. Гараж на 2 авто, камин, терраса. 25 минут от МКАД по Новорижскому шоссе.</p>
+            <div class="property-meta">
+              <span>📍 Истра, МО</span>
+              <span>🏠 280 м²</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="property-card reveal delay-3">
+          <div class="property-img">
+            <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600&h=400&fit=crop" alt="Студия">
+            <span class="property-tag">Аренда</span>
+          </div>
+          <div class="property-body">
+            <div class="property-price">65 000 ₽/мес</div>
+            <h3 class="property-title">Студия, 38 м²</h3>
+            <p class="property-desc">Стильная студия с дизайнерским ремонтом. Полностью меблирована, вся техника. Идеально для одного или пары.</p>
+            <div class="property-meta">
+              <span>📍 Центр Москвы</span>
+              <span>🏠 38 м²</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="property-card reveal delay-4">
+          <div class="property-img">
+            <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600&h=400&fit=crop" alt="Пентхаус">
+            <span class="property-tag">Продажа</span>
+          </div>
+          <div class="property-body">
+            <div class="property-price">72 000 000 ₽</div>
+            <h3 class="property-title">Пентхаус, 165 м²</h3>
+            <p class="property-desc">Эксклюзивный пентхаус с террасой и видом на город. Два уровня, 4 спальни, собственный лифт.</p>
+            <div class="property-meta">
+              <span>📍 Пресненский</span>
+              <span>🏠 165 м²</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="property-card reveal delay-5">
+          <div class="property-img">
+            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&h=400&fit=crop" alt="Таунхаус">
+            <span class="property-tag">Продажа</span>
+          </div>
+          <div class="property-body">
+            <div class="property-price">28 900 000 ₽</div>
+            <h3 class="property-title">Таунхаус, 195 м²</h3>
+            <p class="property-desc">Современный таунхаус в закрытом посёлке. Три этажа, гараж, ландшафтный дизайн участка.</p>
+            <div class="property-meta">
+              <span>📍 Одинцово, МО</span>
+              <span>🏠 195 м²</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="property-card reveal delay-6">
+          <div class="property-img">
+            <img src="https://images.unsplash.com/photo-1600047509358-9dc75507daeb?w=600&h=400&fit=crop" alt="Загородный дом">
+            <span class="property-tag">Продажа</span>
+          </div>
+          <div class="property-body">
+            <div class="property-price">38 500 000 ₽</div>
+            <h3 class="property-title">Дом с участком, 220 м²</h3>
+            <p class="property-desc">Уютный загородный дом в экологически чистом районе. Баня, беседка, ландшафтный сад на 10 сотках.</p>
+            <div class="property-meta">
+              <span>📍 Красногорск, МО</span>
+              <span>🏠 220 м²</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CIAN Reviews -->
+  <section class="cian-reviews" id="reviews">
+    <div class="container">
+      <div class="cian-card reveal-scale">
+        <div class="cian-logo">
+          <div class="cian-logo-icon">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 36V12h6.5l7.5 14.5V12H28v24h-6.5L14 21.5V36H8z" fill="#fff"/>
+              <path d="M30 12h10v4.5h-6v4h5.5v4.5H34v4.5h6V36H30V12z" fill="#fff"/>
+            </svg>
+          </div>
+          <span class="cian-logo-text">ЦИАН</span>
+        </div>
+
+        <div class="section-label">Репутация</div>
+        <h2 class="section-title">Проверенные отзывы на ЦИАН</h2>
+
+        <p class="cian-desc">
+          Узнайте, что говорят клиенты о моей работе. На ЦИАН собраны только честные
+          и подтверждённые отзывы от реальных покупателей и продавцов недвижимости.
+        </p>
+
+        <div class="cian-badges">
+          <span class="cian-badge">✓ Подтверждённые сделки</span>
+          <span class="cian-badge">✓ Реальные клиенты</span>
+          <span class="cian-badge">✓ Независимая площадка</span>
+        </div>
+
+        <a href="https://www.cian.ru/agents/48779/" target="_blank" rel="noopener" class="btn-cian">
+          Читать отзывы на ЦИАН
+          <svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3zM5 5h7v2H7v10h10v-5h2v7H5V5z"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contacts -->
+  <section id="contacts">
+    <div class="container">
+      <div class="section-label reveal">Контакты</div>
+      <h2 class="section-title reveal delay-1">Свяжитесь со мной</h2>
+      <p class="section-desc reveal delay-2">Напишите в мессенджер или позвоните — отвечу в течение 15 минут и помогу с вашим вопросом.</p>
+
+      <div class="contacts-wrapper">
+        <div class="contact-info">
+          <div class="contact-item reveal delay-1">
+            <div class="contact-icon">📞</div>
+            <div>
+              <strong>Телефон</strong>
+              <span>+7 (916) 747-12-96</span>
+            </div>
+          </div>
+          <div class="contact-item reveal delay-2">
+            <div class="contact-icon">✈️</div>
+            <div>
+              <strong>Telegram</strong>
+              <a href="https://t.me/steshakov_igor" target="_blank" rel="noopener">@steshakov_igor</a>
+            </div>
+          </div>
+          <div class="contact-item reveal delay-3">
+            <div class="contact-icon">📍</div>
+            <div>
+              <strong>Регион работы</strong>
+              <span>Москва и Московская область</span>
+            </div>
+          </div>
+          <div class="contact-item reveal delay-4">
+            <div class="contact-icon">🕐</div>
+            <div>
+              <strong>График работы</strong>
+              <span>Пн–Сб: 9:00 — 20:00</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-buttons reveal delay-2">
+          <a href="https://wa.me/79167471296" target="_blank" rel="noopener" class="btn-messenger btn-whatsapp">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.884 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Написать в WhatsApp
+          </a>
+          <a href="https://t.me/steshakov_igor" target="_blank" rel="noopener" class="btn-messenger btn-telegram">
+            <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+            Написать в Telegram
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      © 2026 Игорь Стешаков — Риелтор. Москва и МО. Все права защищены.
+    </div>
+  </footer>
+
+  <script>
+    function toggleMenu() {
+      document.getElementById('mobileNav').classList.toggle('active');
+    }
+
+    window.addEventListener('scroll', () => {
+      document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', e => {
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    const revealElements = document.querySelectorAll('.reveal, .reveal-scale');
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.12,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    revealElements.forEach(el => revealObserver.observe(el));
+
+    document.querySelectorAll('.hero .reveal, .hero .reveal-scale').forEach(el => {
+      setTimeout(() => el.classList.add('visible'), 150);
+    });
+  </script>
+
+</body>
+</html>
